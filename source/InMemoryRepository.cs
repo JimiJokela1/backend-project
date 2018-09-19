@@ -68,5 +68,30 @@ namespace backend_project
 
             return null;
         }
+
+        public Task<Game[]> GetAllGames()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Game> GetGame(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Game> CreateGame(Game game)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Game> ModifyGame(Guid id, ModifiedGame game)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Game> DeleteGame(Guid id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -8,7 +8,7 @@ namespace backend_project
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public int Score { get; set; }
+        public int HighestScore { get; set; }
         public int Mmr { get; set; }
 
         [DateValidation]
@@ -16,7 +16,7 @@ namespace backend_project
 
         public void Modify(ModifiedPlayer player)
         {
-            Score = player.Score;
+            HighestScore = player.Score;
         }
     }
 }

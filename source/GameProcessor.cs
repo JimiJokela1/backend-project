@@ -33,6 +33,8 @@ namespace backend_project
             newGame.Id = Guid.NewGuid();
             newGame.CreationTime = System.DateTime.Now;
 
+            // TODO: calculate rank changes
+
             return await _repository.CreateGame(newGame);
         }
 

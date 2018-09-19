@@ -44,37 +44,5 @@ namespace backend_project
         {
             return _processor.Delete(id);
         }
-
-        // [Route("api/players")]
-        // [HttpPost]
-        // public Task<Player> Create(NewPlayer player)
-        // {
-        //     return _processor.Create(player);
-        // }
-
-        // [Route("api/players/{playerName}")]
-        // [HttpPost]
-        // public Task<Player> Create(string playerName)
-        // {
-        //     NewPlayer player = new NewPlayer(playerName);
-        //     return _processor.Create(player);
-        // }
-
-        // [Route("api/players/diiba")]
-        // [HttpPost]
-        // public Task<Player> CreateDiiba()
-        // {
-        //     NewPlayer player = new NewPlayer("Diiba");
-        //     return _processor.Create(player);
-        // }
-
-        // [Route("api/players")]
-        // [HttpPut]
-        // public Task<Player> Modify(Guid id, ModifiedPlayer player)
-        // {
-        //     return _processor.Modify(id, player);
-        // }
-
-        
     }
 }

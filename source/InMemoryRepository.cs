@@ -8,15 +8,16 @@ namespace backend_project
     public class InMemoryRepository : IRepository
     {
         private List<Player> players = new List<Player>();
+        private List<Game> games = new List<Game>();
 
-        public async Task<Player> Create(Player player)
+        public async Task<Player> CreatePlayer(Player player)
         {
             await Task.CompletedTask;
             players.Add(player);
             return player;
         }
 
-        public async Task<Player> Delete(Guid id)
+        public async Task<Player> DeletePlayer(Guid id)
         {
             await Task.CompletedTask;
 
@@ -33,19 +34,19 @@ namespace backend_project
             }
         }
 
-        public async Task<Player> Get(Guid id)
+        public async Task<Player> GetPlayer(Guid id)
         {
             await Task.CompletedTask;
             return GetPlayerById(id);
         }
 
-        public async Task<Player[]> GetAll()
+        public async Task<Player[]> GetAllPlayers()
         {
             await Task.CompletedTask;
             return players.ToArray();
         }
 
-        public async Task<Player> Modify(Guid id, ModifiedPlayer player)
+        public async Task<Player> ModifyPlayer(Guid id, ModifiedPlayer player)
         {
             await Task.CompletedTask;
             Player found = GetPlayerById(id);
@@ -69,29 +70,64 @@ namespace backend_project
             return null;
         }
 
-        public Task<Game[]> GetAllGames()
+        private Game GetGameById(Guid id)
         {
-            throw new NotImplementedException();
+            foreach (Game game in games)
+            {
+                if (game.Id == id)
+                {
+                    return game;
+                }
+            }
+
+            return null;
         }
 
-        public Task<Game> GetGame(Guid id)
+        public async Task<Game[]> GetAllGames()
         {
-            throw new NotImplementedException();
+            await Task.CompletedTask;
+            return games.ToArray();
         }
 
-        public Task<Game> CreateGame(Game game)
+        public async Task<Game> GetGame(Guid id)
         {
-            throw new NotImplementedException();
+            await Task.CompletedTask;
+            return GetGameById(id);
         }
 
-        public Task<Game> ModifyGame(Guid id, ModifiedGame game)
+        public async Task<Game> CreateGame(Game game)
         {
-            throw new NotImplementedException();
+            await Task.CompletedTask;
+            games.Add(game);
+            return game;
         }
 
-        public Task<Game> DeleteGame(Guid id)
+        public async Task<Game> ModifyGame(Guid id, ModifiedGame game)
         {
-            throw new NotImplementedException();
+            await Task.CompletedTask;
+            Game found = GetGameById(id);
+            if (found != null)
+            {
+                found.Modify(game);
+            }
+            return found;
+        }
+
+        public async Task<Game> DeleteGame(Guid id)
+        {
+            await Task.CompletedTask;
+
+            Game found = GetGameById(id);
+
+            if (found != null)
+            {
+                games.Remove(found);
+                return found;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

@@ -25,10 +25,10 @@ namespace backend_project
         public async Task<Game> Create(NewGame game)
         {
             Game newGame = new Game();
-            newGame.Player_1 = await _repository.Get(game.Player_1_ID);
+            newGame.Player_1 = await _repository.GetPlayer(game.Player_1_ID);
             newGame.Player_1_Score = game.Player_1_Score;
 
-            newGame.Player_2 = await _repository.Get(game.Player_2_ID);
+            newGame.Player_2 = await _repository.GetPlayer(game.Player_2_ID);
             newGame.Player_2_Score = game.Player_2_Score;
 
             newGame.Id = Guid.NewGuid();

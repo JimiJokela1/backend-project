@@ -7,7 +7,8 @@ namespace backend_project
     {
         private IRepository _repository;
 
-        public GameProcessor(IRepository repository) {
+        public GameProcessor(IRepository repository)
+        {
             _repository = repository;
         }
 
@@ -26,14 +27,15 @@ namespace backend_project
             Game newGame = new Game();
             newGame.Player_1 = await _repository.Get(game.Player_1_ID);
             newGame.Player_1_Score = game.Player_1_Score;
-            
+
             newGame.Player_2 = await _repository.Get(game.Player_2_ID);
             newGame.Player_2_Score = game.Player_2_Score;
 
             newGame.Id = Guid.NewGuid();
             newGame.CreationTime = System.DateTime.Now;
 
-            // TODO: calculate rank changes
+            // calculate and apply mmr changes
+            CalculateMmrChanges(newGame);
 
             return await _repository.CreateGame(newGame);
         }
@@ -47,6 +49,15 @@ namespace backend_project
         {
             return _repository.DeleteGame(id);
         }
-        
+
+        /// <summary>
+        /// Calculates how much mmr changes for each player in a game and applies the changes to the players' Mmrs
+        /// </summary>
+        /// <param name="game"></param>
+        private void CalculateMmrChanges(Game game)
+        {
+
+        }
+
     }
 }

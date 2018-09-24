@@ -15,12 +15,12 @@ namespace backend_project
 
         public Task<Player> Get(Guid id)
         {
-            return _repository.Get(id);
+            return _repository.GetPlayer(id);
         }
 
         public Task<Player[]> GetAll()
         {
-            return _repository.GetAll();
+            return _repository.GetAllPlayers();
         }
 
         public Task<Player> Create(NewPlayer player)
@@ -31,17 +31,17 @@ namespace backend_project
             newPlayer.Id = Guid.NewGuid();
             newPlayer.CreationTime = System.DateTime.Now;
 
-            return _repository.Create(newPlayer);
+            return _repository.CreatePlayer(newPlayer);
         }
 
         public Task<Player> Modify(Guid id, ModifiedPlayer player)
         {
-            return _repository.Modify(id, player);
+            return _repository.ModifyPlayer(id, player);
         }
 
         public Task<Player> Delete(Guid id)
         {
-            return _repository.Delete(id);
+            return _repository.DeletePlayer(id);
         }
     }
 }

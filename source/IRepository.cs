@@ -5,11 +5,11 @@ namespace backend_project
 {
     public interface IRepository
     {
-        Task<Player> Get(Guid id);
-        Task<Player[]> GetAll();
-        Task<Player> Create(Player player);
-        Task<Player> Modify(Guid id, ModifiedPlayer player);
-        Task<Player> Delete(Guid id);
+        Task<Player> GetPlayer(Guid id);
+        Task<Player[]> GetAllPlayers();
+        Task<Player> CreatePlayer(Player player);
+        Task<Player> ModifyPlayer(Guid id, ModifiedPlayer player);
+        Task<Player> DeletePlayer(Guid id);
         
         Task<Game> GetGame(Guid id);
         Task<Game[]> GetAllGames();

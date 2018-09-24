@@ -16,5 +16,10 @@ namespace backend_project
 
         [DateValidation]
         public DateTime CreationTime { get; set; }
+
+
+        public void Modify(ModifiedGame modified) {
+            
+        }
     }
 }

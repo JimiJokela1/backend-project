@@ -9,7 +9,8 @@ namespace backend_project
     {
         private IRepository _repository;
 
-        public PlayersProcessor(IRepository repository) {
+        public PlayersProcessor(IRepository repository)
+        {
             _repository = repository;
         }
 

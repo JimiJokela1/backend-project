@@ -16,5 +16,9 @@ namespace backend_project
         Task<Game> CreateGame(Game game);
         Task<Game> ModifyGame(Guid id, ModifiedGame game);
         Task<Game> DeleteGame(Guid id);
+
+        Task<Player> GetNextOpponent(Guid playerId);
+        Task<Player[]> GetTopTenByScore();
+        Task<Player[]> GetTopTenByRank();
     }
 }

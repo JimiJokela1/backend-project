@@ -129,5 +129,20 @@ namespace backend_project
                 return null;
             }
         }
+
+        public Task<Player> GetNextOpponent(Guid playerId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Player[]> GetTopTenByScore()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Player[]> GetTopTenByRank()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

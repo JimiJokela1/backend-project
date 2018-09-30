@@ -130,9 +130,32 @@ namespace backend_project
             }
         }
 
-        public Task<Player> GetNextOpponent(Guid playerId)
+        public async Task<Player> GetNextOpponent(Guid playerId)
         {
-            throw new NotImplementedException();
+            Player player = await GetPlayer(playerId);
+
+            Player[] allPlayers = await GetAllPlayers();
+
+        if (allPlayers.Length > 1){
+        int mmr = player.Mmr;
+        Player closest = allPlayers[0];
+        if (closest.Id == player.Id)
+            closest = allPlayers[1];
+        int closestMmrDiff = Math.Abs(closest.Mmr - mmr);
+        int nextMmrDiff;
+
+        for (int i = 0; i< allPlayers.Length; i++){
+            if (allPlayers[i].Id == player.Id)
+                continue;
+            nextMmrDiff = Math.Abs(mmr - closest.Mmr);
+            if (closestMmrDiff > nextMmrDiff){
+                closest = allPlayers[i];
+                closestMmrDiff = nextMmrDiff;
+            }
+        }
+            return closest;
+        }
+            return null;
         }
 
         public Task<Player[]> GetTopTenByScore()

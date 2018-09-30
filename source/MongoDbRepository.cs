@@ -152,9 +152,14 @@ namespace backend_project
             return result.ToArray();
         }
 
-        public Task<Player[]> GetTopTenByRank()
+        public async Task<Player[]> GetTopTenByRank()
         {
-            throw new NotImplementedException();
+            var result = await _playerCollection.Aggregate()
+                        .SortByDescending(x => x.Mmr)
+                        .Limit(10)
+                        .ToListAsync();
+
+            return result.ToArray();
         }
     }
 }

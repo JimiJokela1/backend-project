@@ -167,6 +167,19 @@ namespace backend_project
         public async Task<Game> CreateGame(Game game)
         {
             await _gameCollection.InsertOneAsync(game);
+
+            // Apply mmr changes and possible new high score to players
+            ModifiedPlayer player1mod = new ModifiedPlayer();
+            player1mod.HighestScore = game.Player_1_Score;
+            player1mod.Mmr =game.Player_1.Mmr + game.Player_1_Rank_Change;
+            
+            ModifiedPlayer player2mod = new ModifiedPlayer();
+            player2mod.HighestScore = game.Player_2_Score;
+            player2mod.Mmr =game.Player_2.Mmr + game.Player_2_Rank_Change;
+
+            await ModifyPlayer(game.Player_1.Id, player1mod);
+            await ModifyPlayer(game.Player_2.Id, player2mod);
+
             return game;
         }
 

@@ -194,9 +194,14 @@ namespace backend_project
             throw new NotImplementedException();
         }
 
-        public Task<Player[]> GetTopTenByScore()
+        public async Task<Player[]> GetTopTenByScore()
         {
-            throw new NotImplementedException();
+            var result = await _playerCollection.Aggregate()
+                        .SortByDescending(x => x.HighestScore)
+                        .Limit(10)
+                        .ToListAsync();
+
+            return result.ToArray();
         }
 
         public Task<Player[]> GetTopTenByRank()

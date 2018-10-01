@@ -58,97 +58,6 @@ namespace backend_project
             await _playerCollection.ReplaceOneAsync(filter, player);
             return player;
         }
-/*
-        public async Task<Item> GetItem(Guid playerId, Guid itemId)
-        {
-            var filter = Builders<Player>.Filter.Eq(p => p.Id, playerId) & Builders<Player>.Filter.Eq("Items.Id", itemId);
-            var getOnlyItems = Builders<Player>.Projection.Include(p => p.Items).ElemMatch(i => i.Items, i => i.Id == itemId);
-            Player player = await _collection.Find(filter).Project<Player>(getOnlyItems).FirstAsync();
-
-            return player.Items[0];
-        }
-
-        public async Task<Item> CreateItem(Guid playerId, Item item)
-        {
-            var filter = Builders<Player>.Filter.Eq(p => p.Id, playerId);
-
-            var update = Builders<Player>.Update.AddToSet("Items", item);
-
-            Player player = await _collection.FindOneAndUpdateAsync(filter, update);
-            return item;
-        }
-
-        public async Task<Item> ModifyItem(Guid playerId, Guid itemId, ModifiedItem modItem)
-        {
-            Item item = await GetItem(playerId, itemId);
-            item.Modify(modItem);
-
-            var filter = Builders<Player>.Filter.Eq(p => p.Id, playerId) & Builders<Player>.Filter.Eq("Items.Id", itemId);
-            var update = Builders<Player>.Update.Set(p => p.Items[-1], item);
-
-            await _collection.UpdateOneAsync(filter, update);
-
-            return item;
-        }
-
-        public async Task<Item[]> GetAllItems(Guid playerId)
-        {
-            var filter = Builders<Player>.Filter.Eq(p => p.Id, playerId);
-            var getOnlyItems = Builders<Player>.Projection.Include(p => p.Items);
-
-            Player player = await _collection.Find(filter).Project<Player>(getOnlyItems).FirstAsync();
-            return player.Items.ToArray();
-        }
-
-        public async Task<Item> DeleteItem(Guid playerId, Guid itemId)
-        {
-            Item item = await GetItem(playerId, itemId);
-
-            var pull = Builders<Player>.Update.PullFilter(p => p.Items, i => i.Id == itemId);
-
-            var filter = Builders<Player>.Filter.Eq(p => p.Id, playerId);
-
-            await _collection.UpdateOneAsync(filter, pull);
-
-            return item;
-        }
-
-        public async Task<Player[]> MoreThanXScore(int x)
-        {
-            var filter = Builders<Player>.Filter.Gte("Score", x);
-            var players = await _collection.Find(filter).ToListAsync();
-            return players.ToArray();
-        }
-
-        public async Task<Player> GetPlayerWithName(string name)
-        {
-            var filter = Builders<Player>.Filter.Eq("Name", name);
-            return await _collection.Find(filter).FirstAsync();
-        }
-
-        public async Task<Player[]> GetPlayersWithItem(Item.ItemType itemType)
-        {
-            var filter = Builders<Player>.Filter.Eq("Items.Type", itemType);
-            var players = await _collection.Find(filter).ToListAsync();
-            return players.ToArray();
-        }
-
-        public async Task<int> GetLevelsWithMostPlayers()
-        {
-            var aggregate = Builders<Player>.Projection.Include("Level");
-            var result = await _collection.Aggregate()
-                .Project(x => new { level = x.Level })
-                .Group(
-                    x => x.level,
-                    x => new { level = x.Key, count = x.Sum(y => 1) }
-                )
-                .SortByDescending(x => x.count)
-                .Limit(3)
-                .ToListAsync();
-
-            return result[0].level;
-        }
-*/
 
         public async Task<Game> GetGame(Guid id)
         {
@@ -167,6 +76,19 @@ namespace backend_project
         public async Task<Game> CreateGame(Game game)
         {
             await _gameCollection.InsertOneAsync(game);
+
+            // Apply mmr changes and possible new high score to players
+            ModifiedPlayer player1mod = new ModifiedPlayer();
+            player1mod.HighestScore = game.Player_1_Score;
+            player1mod.Mmr =game.Player_1.Mmr + game.Player_1_Rank_Change;
+            
+            ModifiedPlayer player2mod = new ModifiedPlayer();
+            player2mod.HighestScore = game.Player_2_Score;
+            player2mod.Mmr =game.Player_2.Mmr + game.Player_2_Rank_Change;
+
+            await ModifyPlayer(game.Player_1.Id, player1mod);
+            await ModifyPlayer(game.Player_2.Id, player2mod);
+
             return game;
         }
 
@@ -189,19 +111,56 @@ namespace backend_project
             return game;
         }
 
-        public Task<Player> GetNextOpponent(Guid playerId)
+        public async Task<Player> GetNextOpponent(Guid playerId)
         {
-            throw new NotImplementedException();
+            Player player = await GetPlayer(playerId);
+
+            Player[] allPlayers = await GetAllPlayers();
+
+            if (allPlayers.Length > 1)
+            {
+                int mmr = player.Mmr;
+                Player closest = allPlayers[0];
+                if (closest.Id == player.Id)
+                    closest = allPlayers[1];
+                int closestMmrDiff = Math.Abs(closest.Mmr - mmr);
+                int nextMmrDiff;
+                // 20 14 30 10 40
+                // 14
+                for (int i = 1; i < allPlayers.Length; i++)
+                {
+                    if (allPlayers[i].Id == player.Id)
+                        continue;
+                    nextMmrDiff = Math.Abs(mmr - allPlayers[i].Mmr);
+                    if (closestMmrDiff > nextMmrDiff)
+                    {
+                        closest = allPlayers[i];
+                        closestMmrDiff = nextMmrDiff;
+                    }
+                }
+                return closest;
+            }
+            return null;
         }
 
-        public Task<Player[]> GetTopTenByScore()
+        public async Task<Player[]> GetTopTenByScore()
         {
-            throw new NotImplementedException();
+            var result = await _playerCollection.Aggregate()
+                        .SortByDescending(x => x.HighestScore)
+                        .Limit(10)
+                        .ToListAsync();
+
+            return result.ToArray();
         }
 
-        public Task<Player[]> GetTopTenByRank()
+        public async Task<Player[]> GetTopTenByRank()
         {
-            throw new NotImplementedException();
+            var result = await _playerCollection.Aggregate()
+                        .SortByDescending(x => x.Mmr)
+                        .Limit(10)
+                        .ToListAsync();
+
+            return result.ToArray();
         }
     }
 }

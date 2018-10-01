@@ -125,12 +125,13 @@ namespace backend_project
                     closest = allPlayers[1];
                 int closestMmrDiff = Math.Abs(closest.Mmr - mmr);
                 int nextMmrDiff;
-
-                for (int i = 0; i < allPlayers.Length; i++)
+                // 20 14 30 10 40
+                // 14
+                for (int i = 1; i < allPlayers.Length; i++)
                 {
                     if (allPlayers[i].Id == player.Id)
                         continue;
-                    nextMmrDiff = Math.Abs(mmr - closest.Mmr);
+                    nextMmrDiff = Math.Abs(mmr - allPlayers[i].Mmr);
                     if (closestMmrDiff > nextMmrDiff)
                     {
                         closest = allPlayers[i];

@@ -15,7 +15,7 @@ namespace backend_project
         public MongoDbRepository()
         {
             var mongoClient = new MongoClient("mongodb://localhost:27017");
-            IMongoDatabase database = mongoClient.GetDatabase("game");
+            IMongoDatabase database = mongoClient.GetDatabase("backend-project");
             _playerCollection = database.GetCollection<Player>("players");
             _gameCollection = database.GetCollection<Game>("games");
         }

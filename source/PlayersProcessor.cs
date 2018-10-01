@@ -24,15 +24,20 @@ namespace backend_project
             return _repository.GetAllPlayers();
         }
 
-        public Task<Player> Create(NewPlayer player)
+        public async Task<Player> Create(NewPlayer player)
         {
+            Player playerWithSameName = await _repository.GetPlayerByName(player.Name);
+            if (playerWithSameName != null)
+            {
+                throw new SameNamePlayerException("Same name as a player currently in the list");
+            }
             Player newPlayer = new Player();
             newPlayer.Name = player.Name;
             // set other values for new player
             newPlayer.Id = Guid.NewGuid();
             newPlayer.CreationTime = System.DateTime.Now;
 
-            return _repository.CreatePlayer(newPlayer);
+            return await _repository.CreatePlayer(newPlayer);
         }
 
         public Task<Player> Modify(Guid id, ModifiedPlayer player)

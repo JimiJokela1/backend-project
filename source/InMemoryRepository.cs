@@ -170,5 +170,10 @@ namespace backend_project
         {
             throw new NotImplementedException();
         }
+
+        public Task<Player> GetPlayerByName(string name)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

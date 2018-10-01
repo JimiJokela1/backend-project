@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-namespace ass3
+namespace backend_project
 {
     public class SameNamePlayerResult : ObjectResult
     {

@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
-namespace ass3
+namespace backend_project
 {
     public class SameNamePlayerExceptionFilterAttribute : ExceptionFilterAttribute
     {
@@ -14,9 +14,6 @@ namespace ass3
                 result.StatusCode = 400;
                 result.Content = context.Exception.Message;
                 context.Result = result;
-
-                
-                
             }
         }
     }

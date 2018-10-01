@@ -162,5 +162,12 @@ namespace backend_project
 
             return result.ToArray();
         }
+
+        public async Task<Player> GetPlayerByName(string name)
+        {
+            var filter = Builders<Player>.Filter.Eq(x => x.Name, name);
+            Player player = await _playerCollection.Find(filter).FirstAsync();
+            return player;
+        }
     }
 }

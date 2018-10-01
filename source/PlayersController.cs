@@ -48,7 +48,6 @@ namespace backend_project
         public Task<Player> Delete(Guid id)
         {
             return _processor.Delete(id);
-
         }
 
         [HttpGet("{playerId:Guid}/NextOpponent")]
@@ -56,13 +55,13 @@ namespace backend_project
         {
             return _processor.GetNextOpponent(playerId);
         }
-        
+
         [HttpGet("TopTenScore")]
         public Task<Player[]> GetTopTenByScore()
         {
             return _processor.GetTopTenByScore();
         }
-        
+
         [HttpGet("TopTenRank")]
         public Task<Player[]> GetTopTenByRank()
         {

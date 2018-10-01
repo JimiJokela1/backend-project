@@ -10,6 +10,8 @@ namespace backend_project
         Task<Player> CreatePlayer(Player player);
         Task<Player> ModifyPlayer(Guid id, ModifiedPlayer player);
         Task<Player> DeletePlayer(Guid id);
+
+        Task<Player> GetPlayerByName(string name);
         
         Task<Game> GetGame(Guid id);
         Task<Game[]> GetAllGames();

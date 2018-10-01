@@ -1,9 +1,11 @@
 using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend_project
 {
+    [Authorize(Roles = "Admin, User")]
     [Route("api/[controller]")]
     [ApiController]
     public class PlayersController
@@ -41,10 +43,12 @@ namespace backend_project
             return _processor.Modify(id, player);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id:Guid}")]
         public Task<Player> Delete(Guid id)
         {
             return _processor.Delete(id);
+
         }
 
         [HttpGet("{playerId:Guid}/NextOpponent")]

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -31,6 +32,8 @@ namespace backend_project
             services.AddSingleton<IRepository, MongoDbRepository>();
             services.AddSingleton<PlayersProcessor>();
             services.AddSingleton<GameProcessor>();
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
+            services.AddSingleton<ApiKey>(new ApiKey(Configuration.GetValue<string>("api-key"), Configuration.GetValue<string>("api-key-admin")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,7 +47,7 @@ namespace backend_project
             {
                 app.UseHsts();
             }
-
+            app.UseAuthMiddleware();
             app.UseHttpsRedirection();
             app.UseMvc();
         }

@@ -28,8 +28,9 @@ namespace backend_project
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             
-            services.AddSingleton<IRepository, InMemoryRepository>();
+            services.AddSingleton<IRepository, MongoDbRepository>();
             services.AddSingleton<PlayersProcessor>();
+            services.AddSingleton<GameProcessor>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

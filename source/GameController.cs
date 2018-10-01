@@ -27,12 +27,14 @@ namespace backend_project
             return _processor.GetAll();
         }
 
+        [ValidateModel]
         [HttpPost]
         public Task<Game> Create([FromBody] NewGame game)
         {
             return _processor.Create(game);
         }
 
+        [ValidateModel]
         [HttpPut("{id:Guid}")]
         public Task<Game> Modify(Guid id, [FromBody] ModifiedGame game)
         {

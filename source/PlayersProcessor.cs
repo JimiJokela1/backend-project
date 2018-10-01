@@ -44,5 +44,20 @@ namespace backend_project
         {
             return _repository.DeletePlayer(id);
         }
+ 
+        public Task<Player> GetNextOpponent(Guid playerId)
+        {
+            return _repository.GetNextOpponent(playerId);
+        }
+        
+        public Task<Player[]> GetTopTenByScore()
+        {
+            return _repository.GetTopTenByScore();
+        }
+        
+        public Task<Player[]> GetTopTenByRank()
+        {
+            return _repository.GetTopTenByRank();
+        }
     }
 }

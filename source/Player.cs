@@ -16,7 +16,11 @@ namespace backend_project
 
         public void Modify(ModifiedPlayer player)
         {
-            HighestScore = player.Score;
+            if (player.HighestScore > HighestScore)
+            {
+                HighestScore = player.HighestScore;
+            }
+            Mmr = player.Mmr;
         }
     }
 }

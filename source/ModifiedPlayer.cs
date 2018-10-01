@@ -4,6 +4,7 @@ namespace backend_project
 {
     public class ModifiedPlayer
     {
-        public int Score { get; set; }
+        public int HighestScore { get; set; }
+        public int Mmr { get; set; }
     }
 }

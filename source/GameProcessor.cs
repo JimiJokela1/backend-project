@@ -72,7 +72,9 @@ namespace backend_project
                 scoreP2 = 1;
             if (game.Player_1_Score < game.Player_2_Score)
             {
-                mmrRel = (mmrP2 / mmrP1);
+                // 67 45
+                // -5 0
+                mmrRel = Math.Abs(mmrP2 / mmrP1);
                 scoreRel = scoreP2 / scoreP1; // p2mmr = 100 p1mmr = 50 p2sco = 100 p1sco = 50
                 if (mmrRel > 2)
                     mmrRel = 2;
@@ -83,7 +85,7 @@ namespace backend_project
             }
             else if (game.Player_1_Score > game.Player_2_Score)
             {
-                mmrRel = (mmrP1 / mmrP2);
+                mmrRel = Math.Abs(mmrP1 / mmrP2);
                 scoreRel = scoreP1 / scoreP2;
                 if (mmrRel > 2)
                     mmrRel = 2;
@@ -96,7 +98,7 @@ namespace backend_project
             {
                 if (mmrP1 > mmrP2)
                 {
-                    mmrRel = (mmrP1 / mmrP2);
+                    mmrRel = Math.Abs(mmrP1 / mmrP2);
                     if (mmrRel > 2)
                         mmrRel = 2;
                     game.Player_2_Rank_Change += (int) (5f * mmrRel);
@@ -104,7 +106,7 @@ namespace backend_project
                 }
                 else if (mmrP1 < mmrP2)
                 {
-                    mmrRel = (mmrP2 / mmrP1);
+                    mmrRel = Math.Abs(mmrP2 / mmrP1);
                     if (mmrRel > 2)
                         mmrRel = 2;
                     game.Player_2_Rank_Change -= (int) (5f / mmrRel);
